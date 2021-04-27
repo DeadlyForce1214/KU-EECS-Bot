@@ -42,7 +42,7 @@ async def checkServers(ctx):
 async def printMakeFile(ctx):
     await ctx.send(makeFile)
 
-@bot.command(name='link', help='Links a class wiki page. Syntax is -link [Class#]. Example: -link 168. Available class list: \n' + classList)
+@bot.command(name='link', help='Links a class wiki page. Syntax is =link [Class#]. Example: -link 168.')
 async def sendLink(ctx, classNumber):
     await ctx.send('https://wiki.ittc.ku.edu/ittc_wiki/index.php/EECS' + str(classNumber))
 
