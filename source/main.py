@@ -49,5 +49,9 @@ async def sendLink(ctx, classNumber):
 @bot.command(name='classList', help='Prints out the class list on the EECS wiki')
 async def printClassList(ctx):
     await ctx.send(classList)
+    
+@bot.command(name='github', help='Prints out the github link for this project')
+async def printGitHub(ctx):
+    await ctx.send('https://github.com/DeadlyForce1214/KU-EECS-Bot')
 
 bot.run(TOKEN)
