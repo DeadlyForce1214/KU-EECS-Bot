@@ -1,0 +1,13 @@
+Class List (As of 4/27/21):
+```
+EECS 140 - Introduction to Digital Logic Design
+EECS 168 - Programming I
+EECS 268 - Programming II
+EECS 388 - Computer Systems & Assembly Language
+EECS 448 - Software Engineering
+EECS 665 - Compiler Construction
+EECS 740 - Image Processing
+EECS 753 - Embedded and Real Time Systems
+EECS 755 - System Requirements Modeling
+EECS 881 - High-Performance Networking
+```
