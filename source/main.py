@@ -14,7 +14,7 @@ makeFileObj = open("Makefile.txt", "r")
 makeFile = makeFileObj.read()
 makeFileObj.close()
 
-TOKEN = 'ODM2NDkzNDIwOTI3MTIzNDYw.YIezNA.Km9cMA9RN8pgEuJ4tFtNIZqdyUU'
+TOKEN = #Token goes here
 
 bot = commands.Bot(command_prefix='=')
 
