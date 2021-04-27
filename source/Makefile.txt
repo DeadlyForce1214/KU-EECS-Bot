@@ -1,0 +1,15 @@
+```
+exercise01: main.o
+	g++ -std=c++11 -g -Wall main.o -o exercise01
+
+main.o: main.cpp
+	g++ -std=c++11 -g -Wall -c main.cpp
+
+clean: 
+	rm *.o exercise01
+```
+Check to make sure that your cpp file matches the name above. The name in this example is main.cpp
+
+To run the Makefile, ensure you are in the directory of your exercise, and use the command 'make'.
+
+To clean output files and executables, which is necessary before tarballing your code, use the command 'make clean'.
