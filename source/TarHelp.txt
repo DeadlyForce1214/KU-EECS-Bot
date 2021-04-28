@@ -1,0 +1,32 @@
+The tar command is useful in being a means of compressing files (or directories) into a single file. 
+The means of this is by tar [options] [archive-file] [file or directory to be archived]
+
+**Options:**
+``-c`` : Creates Archive
+``-x`` : Extract the archive
+``-f`` : creates archive with given filename
+``-t`` : displays or lists files in archived file
+``-u`` : archives and adds to an existing archive file
+``-v`` : Displays Verbose Information
+``-A`` : Concatenates the archive files
+``-z`` : zip, tells tar command that create tar file using gzip
+``-j`` : filter archive tar file using tbzip
+``-W`` : Verify a archive file
+``-r`` : update or add file or directory in already existed .tar file
+``-z`` : compress the archive with gzip
+
+Note: If it is just a .tar file, you do not need the -z option!
+
+Examples we should know:
+**Archiving:**
+``tar -czvf [archive-file.tar.gz] [source files]`` --Sends the source files into the archive file with .gz compression
+``tar -cvf [archive-file.tar] [source-files]`` --Sends the source file into the archive file without .gz compression
+
+**Extracting:**
+``tar -xvf [archive-file.tar] [source-destination]`` --Extracts to the source file, without decompression by .gz
+``tar -xzvf [archive-file.tar] [source-destination]`` --Extracts to the source file, with decompression by .gz
+
+**Viewing contents:**
+``tar -tvf [archive-file.tar]`` --Views the contents of the tar file without extracting it.
+
+For more help, you can always run the ``man tar`` command in a linux command line!
