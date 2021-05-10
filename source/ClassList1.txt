@@ -1,0 +1,54 @@
+Class List (As of 5/10/21):
+```
+EECS 101 New Student Seminar
+EECS 137 Visual Basic for Engineers
+EECS 138 Introduction to Computing
+EECS 140 Introduction to Digital Logic Design
+EECS 141 Introduction to Digital Logic: Honors
+EECS 168 Programming I
+EECS 169 Programming I: Honors
+EECS 202 Circuits I
+EECS 210 Discrete Structures
+EECS 211 Circuits I
+EECS 212 Circuits II
+EECS 220 Electromagnetics I
+EECS 221 Electromagnetics I
+EECS 268 Programming II
+EECS 312 Electronic Circuits I
+EECS 315 Electric Circuits and Machines
+EECS 316 Circuits, Electronics and Instrumentation
+EECS 317 Electronics and Instrumentation
+EECS 318 Circuits and Electronics Lab
+EECS 360 Signal and System Analysis
+EECS 361 Signal and System Analysis
+EECS 368 Programming Language Paradigms
+EECS 388 Embedded Systems
+EECS 399 Projects
+EECS 412 Electronic Circuits II
+EECS 420 Electromagnetics II
+EECS 441 Power Systems Engineering II
+EECS 443 Digital Systems Design
+EECS 444 Control Systems
+EECS 448 Software Engineering I
+EECS 455 Cyber Defense Practice
+EECS 465 Cyber Defense
+EECS 470 Electronic Devices and Properties of Materials
+EECS 498 Honors Research
+EECS 501 Senior Design Laboratory I
+EECS 502 Senior Design Laboratory II
+EECS 510 Introduction to the Theory of Computing
+EECS 512 Electronic Circuits III
+EECS 541 Computer Systems Design Laboratory I
+EECS 542 Computer Systems Design Laboratory II
+EECS 544 Electric Machines and Drives
+EECS 545 Electric Energy Production and Storage
+EECS 547 Power System Analysis I
+EECS 548 Power System Analysis II
+EECS 560 Data Structures
+EECS 562 Introduction to Communication Systems
+EECS 563 Introduction to Communication Networks
+EECS 565 Introduction to Information and Computer Security
+EECS 569 Computer Forensics
+EECS 581 Computer Science Design I
+EECS 582 Computer Science Design II
+```
