@@ -1,36 +1,40 @@
 # bot.py
 import os
+import json
+import difflib
 
 from discord.ext import commands
 
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
 
-classFile1 = open("ClassList1.txt", "r")
-classList1 = classFile1.read()
-classFile1.close()
+majorClassesDict = {}
+makeFile = ""
+classData = ""
+tarHelp = ""
 
-classFile2 = open("ClassList2.txt", "r")
-classList2 = classFile2.read()
-classFile2.close()
+def load():
+    with os.scandir("Majors/") as entries:
+        for entry in entries:
+            majorName = entry.name
+            filename = "Majors/" + entry.name  + "/data.json"
+            print(filename)
+            with open(filename) as json_file:
+                print("Loaded data for " + entry.name)
+                data = json.load(json_file)
+                majorClassesDict[majorName] = data
 
-classFile3 = open("ClassList3.txt", "r")
-classList3 = classFile3.read()
-classFile3.close()
+    makeFileObj = open("Makefile.txt", "r")
+    makeFile = makeFileObj.read()
+    makeFileObj.close()
 
-classDescriptionData = open("ClassDataDesc.txt", "r")
-classData = classDescriptionData.read()
-classDescriptionData.close()
+    tarHelpObj = open("TarHelp.txt", "r")
+    tarHelp = tarHelpObj.read()
+    tarHelpObj.close()
 
-makeFileObj = open("Makefile.txt", "r")
-makeFile = makeFileObj.read()
-makeFileObj.close()
+load()
 
-tarHelpObj = open("TarHelp.txt", "r")
-tarHelp = tarHelpObj.read()
-tarHelpObj.close()
-
-TOKEN = 'lol' #The actual token goes here
+TOKEN = #Token goes here
 
 bot = commands.Bot(command_prefix='=')
 
@@ -64,34 +68,45 @@ async def printMakeFile(ctx):
 async def sendLink(ctx, classNumber):
     await ctx.send('https://wiki.ittc.ku.edu/ittc_wiki/index.php/EECS' + str(classNumber))
 
-@bot.command(name='classList', help='Prints out the class list on the EECS wiki')
-async def printClassList(ctx):
+@bot.command(name='classList', help='Prints out the class list for the supplied major. Usage is =classList [major]. IE: =classList eecs')
+async def printClassList(ctx, major):
     channel = ctx.channel
-    await channel.send(classList1)
-    await channel.send(classList2)
-    await channel.send(classList3)
+    majorAdjusted = str.upper(major)
+    if majorClassesDict[majorAdjusted]:
+        dict = majorClassesDict[majorAdjusted]
+        toPrint = "**__Class list for " + majorAdjusted + '__**```\n'
+        for key in dict:
+            entry = '\n' + key
+            tmp = toPrint + entry
+            if len(tmp) >= 1997:
+                await channel.send(toPrint + "```")
+                toPrint = "```\n"
+            else:
+                toPrint += entry
+        await channel.send(toPrint + "```")
+    else:
+        await ctx.send("Cannot find data for major " + majorAdjusted)
 
 @bot.command(name='classInfo', help='Prints the summary of the class')
-async def printClassInfo(ctx, majorName, classNumber):
-    if majorName == "EECS":
-        classNameString = majorName + ' ' + classNumber
-        startIndex=classData.find('<' + classNameString + '>')
-        if startIndex:
-            titleEndIndex = classData.find('\n',startIndex)
-            if titleEndIndex:
-                titleString=classData[startIndex+2+len(classNameString):titleEndIndex]
-                endIndex = classData.find('</' + classNameString + '>')
-                if endIndex:
-                    await ctx.send("**__Class Info for " + classNameString + ": " + titleString + "__**\n" + classData[titleEndIndex:endIndex])
-                else:
-                    await ctx.send("Error: Could not find end index")
-            else:
-                await ctx.send("Error: Could not find the end of the title")
-        else:
-            await ctx.send("Error: Could not find the class tag")
-    else:
-        await ctx.send('No support for non EECS classes are currently available')
+async def printClassInfo(ctx, majorName, *, args):
+    majorAdjusted = str.upper(majorName)
+    if majorClassesDict[majorAdjusted]:
+        dict = majorClassesDict[majorAdjusted]
+        adjustLength = len(majorName)+1
+        found=False
+        if len(args) == 3:
+            for key in dict:
+                if key[adjustLength:adjustLength + 3] == args:
+                    await ctx.send("**__Class Info for " + key + "__**\n" + dict[key])
+                    found=True
+                    break
 
+        if not found:
+            matches = difflib.get_close_matches(str(args), dict.keys(), 1, 0.25)
+            if len(matches) > 0:
+                await ctx.send("**__Class Info for " + matches[0] + "__**\n" + dict[matches[0]])
+            else:
+                await ctx.send("No match found")
 
 @bot.command(name='github', help='Prints out the github link for this project')
 async def printGitHub(ctx):
@@ -101,90 +116,13 @@ async def printGitHub(ctx):
 async def printTarCommands(ctx):
     await ctx.send(tarHelp)
 
-#TODO make this work in the future better. Probably end up writing a linter for this
-#@bot.command(name='memcheck', help='Checks for non deleted pointers')
-#async def memCheck(ctx):
-#    lines= list()
-#    types=['int','double','string','char','long']
-#    pointers = list()
-#
-#    msg = ctx.message.content
-#    lastIndex=msg.find('```c++')
-#    if lastIndex == -1:
-#        await ctx.send('Did not find the code. Did you put it into a code block? Put it inside of a codeblock marked as c++ please!')
-#        return
-#    else:
-#        lastIndex+=len('```c++')
-#    
-#    while True:
-#        nextCloseBacketIndex=msg.find('}',lastIndex+1)
-#        nextOpenBracketIndex=msg.find('}',lastIndex+1)
-#        nextSemiColonIndex=msg.find(';',lastIndex+1)
-#        if nextIndex == -1:
-#            break
-#        toAdd=msg[lastIndex:nextIndex]
-#        lines.append(toAdd.strip())
-#        lastIndex=nextIndex+1
-#
-#    for i in lines:
-#        if i.find('*') != -1:
-#            for j in types:
-#                startIndex=i.find(j+'*')
-#                if startIndex == 0:
-#                    startIndex= i.find(' ',startIndex)
-#                    if startIndex != -1:
-#                        endIndex=i.find('=')
-#                        if endIndex == -1:
-#                            endIndex=i.find(';')
-#                        if endIndex == -1:
-#                            await ctx.send("Weird, couldn't find the end of this: " + i)
-#                            break
-#                        name=i[startIndex+len(j)+1:endIndex].strip()
-#                        pointers.append(name)
-#                elif startIndex != -1:
-#                    print('The start index was not the beginning?')
-#        if i.find('delete') != -1:
-#            for j in pointers:
-#                if i.find(j) != -1:
-#                    pointers.remove(j)
-#
-#    numRemaining = len(pointers)
-#    if numRemaining != 0:
-#        toPrint='Not all pointers were detected deleted! Pointers that have issues:'
-#        for i in pointers:
-#            toPrint+='\n'+i
-#        await ctx.send(toPrint)
-#    else:
-#        await ctx.send('All pointers seem to have been deleted')
-
 @bot.command(name='reload',help='Admin command to reload the data files')
 async def reloadFiles(ctx):
     if ctx.author.guild_permissions.administrator:
         print("Reloading data files...")
-        classFile1 = open("ClassList1.txt", "r")
-        classList1 = classFile1.read()
-        classFile1.close()
-
-        classFile2 = open("ClassList2.txt", "r")
-        classList2 = classFile2.read()
-        classFile2.close()
-
-        classFile3 = open("ClassList3.txt", "r")
-        classList3 = classFile3.read()
-        classFile3.close()
-
-        classDescriptionData = open("ClassDataDesc.txt", "r")
-        classData = classDescriptionData.read()
-        classDescriptionData.close()
-
-        makeFileObj = open("Makefile.txt", "r")
-        makeFile = makeFileObj.read()
-        makeFileObj.close()
-
-        tarHelpObj = open("TarHelp.txt", "r")
-        tarHelp = tarHelpObj.read()
-        tarHelpObj.close()
-        await ctx.send('Data has been reloaded!')
+        load()
+        print("Reload successful!")
+        await ctx.send("Reload of files was successful!")
     else:
         await ctx.send("Command cannot be executed. Lacking sufficient permissions.")
 
